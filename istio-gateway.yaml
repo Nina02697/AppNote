@@ -1,0 +1,38 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: app-note-gateway
+  namespace: default
+spec:
+  selector:
+    istio: ingressgateway 
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "*" 
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: app-note
+  namespace: default
+spec:
+  hosts:
+  - "*" 
+  gateways:
+  - app-note-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /app-note/
+    rewrite:
+      uri: /
+    route:
+    - destination:
+        port:
+          number: 8080
+        host: app-note.default.svc.cluster.local 
+

@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-note
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app-note
+  template:
+    metadata:
+      labels:
+        app: app-note
+    spec:
+      containers:
+        - image: nina6597/app-note:1
+          imagePullPolicy: IfNotPresent
+          name: app-note
+      restartPolicy: Always
